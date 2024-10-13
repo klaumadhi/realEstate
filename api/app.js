@@ -66,4 +66,4 @@ io.on("connection", (socket) => {
     console.log("User disconnected");
   });
 });
-io.listen(process.env.PORT + 1 || 4000);
+io.listen(4000);
