@@ -22,6 +22,10 @@ app.use("/api/messages", messageRoute);
 app.listen(9000, () => {
   console.log("Server is running on port 9000");
 });
+
+app.get("/", (req, res) => {
+  res.json("Hello");
+});
 import { Server } from "socket.io";
 const io = new Server({
   cors: {
