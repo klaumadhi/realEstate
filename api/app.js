@@ -9,9 +9,11 @@ import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
-
+import mongoose from "mongoose";
 const app = express();
 const server = http.createServer(app); // Create an HTTP server for both Express and Socket.IO
+
+mongoose.connect(process.env.DATABASE_URL);
 
 // Set up CORS
 app.use(
