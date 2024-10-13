@@ -24,6 +24,7 @@ import { Server } from "socket.io";
 const io = new Server({
   cors: {
     origin: process.env.CLIENT_URL,
+    credentials: true,
   },
 });
 let onlineUser = [];
