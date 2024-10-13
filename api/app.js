@@ -17,7 +17,7 @@ app.use("/api/users", userRoute);
 app.use("/api/test", testRoute);
 app.use("/api/chats", chatRoute);
 app.use("/api/messages", messageRoute);
-app.listen(process.env.CLIENT_URL || 9000, () => {
+app.listen(process.env.PORT || 9000, () => {
   console.log("Server is running on port 9000");
 });
 import { Server } from "socket.io";
