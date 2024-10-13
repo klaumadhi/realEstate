@@ -7,7 +7,7 @@ import userRoute from "./routes/user.route.js";
 import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
