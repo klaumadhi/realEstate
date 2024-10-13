@@ -31,7 +31,7 @@ app.listen(9000, () => {
 });
 
 app.get("/", (req, res) => {
-  res.json("Hello");
+  res.json({ message: "Hello" });
 });
 import { Server } from "socket.io";
 const io = new Server({
