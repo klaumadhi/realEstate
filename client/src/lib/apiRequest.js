@@ -1,6 +1,6 @@
 import axios from "axios";
 const apiRequest = axios.create({
-  baseURL: "http://localhost:9000/api",
+  baseURL: "https://realestate-bx27.onrender.com/api",
   withCredentials: true, // Include cookies in requests
 });
 export default apiRequest;

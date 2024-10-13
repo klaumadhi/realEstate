@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 import { Server } from "socket.io";
 const io = new Server({
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
   },
 });
 let onlineUser = [];
