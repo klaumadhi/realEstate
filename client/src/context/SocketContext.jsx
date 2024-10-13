@@ -12,7 +12,7 @@ export const SocketContextProvider = ({children})=>{
  
 
     useEffect(()=>{
-       setSocket(io("http://localhost:4000"))
+       setSocket(io("https://real-estate-uysi.vercel.app"))
     },[])
 
     useEffect(()=>{
