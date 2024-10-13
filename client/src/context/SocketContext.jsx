@@ -11,9 +11,10 @@ export const SocketContextProvider = ({children})=>{
 
  
 
-    useEffect(()=>{
-       setSocket(io("https://real-estate-uysi.vercel.app"))
-    },[])
+    useEffect(() => {
+        setSocket(io("https://real-estate-uysi.vercel.app:4000")); 
+      }, []);
+      
 
     useEffect(()=>{
         currentUser && socket?.emit("newUser", currentUser.id)
