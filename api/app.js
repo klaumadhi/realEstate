@@ -56,10 +56,10 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => {
-  console.log(`User connected with transport: ${socket.conn.transport.name}`);
+  console.log(`User connected with transport: ` + socket.conn.transport.name);
 
   socket.conn.on("upgrade", (transport) => {
-    console.log(`Connection upgraded to: ${transport}`);
+    console.log(`Connection upgraded to: ` + transport);
   });
 
   // Add new user
@@ -79,7 +79,7 @@ io.on("connection", (socket) => {
   // User disconnect
   socket.on("disconnect", (reason) => {
     removeUser(socket.id);
-    console.log(`User disconnected: ${reason}`);
+    console.log(`User disconnected: ` + reason);
   });
 });
 
