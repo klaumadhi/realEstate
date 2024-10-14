@@ -66,14 +66,14 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         secure: true, // if using HTTPS
-        maxAge: "7d",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         sameSite: "None",
       })
       .status(200)
       .json(userInfo);
   } catch (err) {
     console.error(err);
-    req?.status(500).json({ message: "Failed to login " });
+    req.status(500).json({ message: "Failed to login " });
   }
 };
 
