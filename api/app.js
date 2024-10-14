@@ -14,12 +14,7 @@ import http from "http";
 const app = express();
 
 // Middleware
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL, // Frontend URL
-    credentials: true, // Allows sending cookies across domains
-  })
-);
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -49,7 +44,6 @@ const addUser = (userId, socketId) => {
   const userExists = onlineUsers.find((user) => user.userId === userId);
   if (!userExists) {
     onlineUsers.push({ userId, socketId });
-    console.log("User added:", { userId, socketId });
   }
 };
 
@@ -75,9 +69,6 @@ io.on("connection", (socket) => {
     const receiver = getUser(receiverId);
     if (receiver) {
       io.to(receiver.socketId).emit("getMessage", data);
-      console.log(`Message sent to user ${receiverId}:`, data);
-    } else {
-      console.log(`User ${receiverId} not found online`);
     }
   });
 
