@@ -67,7 +67,7 @@ export const login = async (req, res) => {
         httpOnly: true,
         secure: true, // if using HTTPS
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        // sameSite: "None",
+        sameSite: "None", // Allows cookies to be sent across different origins
       })
       .status(200)
       .json(userInfo);

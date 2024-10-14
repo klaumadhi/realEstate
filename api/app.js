@@ -14,7 +14,12 @@ import http from "http";
 const app = express();
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // Frontend URL
+    credentials: true, // Allows sending cookies across domains
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
