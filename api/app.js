@@ -49,6 +49,7 @@ const addUser = (userId, socketId) => {
   const userExists = onlineUsers.find((user) => user.userId === userId);
   if (!userExists) {
     onlineUsers.push({ userId, socketId });
+    console.log("User added:", { userId, socketId });
   }
 };
 
@@ -74,6 +75,9 @@ io.on("connection", (socket) => {
     const receiver = getUser(receiverId);
     if (receiver) {
       io.to(receiver.socketId).emit("getMessage", data);
+      console.log(`Message sent to user ${receiverId}:`, data);
+    } else {
+      console.log(`User ${receiverId} not found online`);
     }
   });
 
