@@ -67,13 +67,13 @@ export const login = async (req, res) => {
         httpOnly: true,
         secure: true, // if using HTTPS
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        sameSite: "None", // Allows cookies to be sent across different origins
+        sameSite: "None",
       })
       .status(200)
       .json(userInfo);
   } catch (err) {
     console.error(err);
-    req.status(500).json({ message: "Failed to login " });
+    req?.status(500).json({ message: "Failed to login " });
   }
 };
 
