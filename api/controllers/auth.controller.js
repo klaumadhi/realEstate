@@ -54,7 +54,7 @@ export const login = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "7d",
+        expiresIn: 1000 * 60 * 60 * 24 * 7,
       }
     );
 
@@ -66,7 +66,7 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         secure: true, // if using HTTPS
-        maxAge: "7d",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         sameSite: "None", // Allows cookies to be sent across different origins
       })
       .status(200)
