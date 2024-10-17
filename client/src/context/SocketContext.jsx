@@ -10,8 +10,8 @@ export const SocketContextProvider = ({children})=>{
        setSocket(io("https://realestate-bx27.onrender.com"), {
         reconnection: true, // Allow reconnection
         reconnectionAttempts: Infinity, // Retry reconnection indefinitely
-        reconnectionDelay: 1000, // Start retrying after 1 second
-        reconnectionDelayMax: 5000, // Maximum delay between reconnections
+        reconnectionDelay: 500, // Start retrying after 1 second
+        reconnectionDelayMax: 1000, // Maximum delay between reconnections
         transports: ["websocket"], // Use WebSocket and disable long polling
         withCredentials: true, // Send cookies with requests if necessary
       })
