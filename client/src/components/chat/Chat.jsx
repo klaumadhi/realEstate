@@ -16,8 +16,13 @@ function Chat({ chats: initialChats }) {
   const increase = useNotificationStore((state) => state.increase);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const timeoutId = setTimeout(() => {
+      messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100); // 100ms delay before scrolling
+  
+    return () => clearTimeout(timeoutId);
   }, [chat?.messages]);
+  
 
   const handleOpenChat = async (id, receiver) => {
     try {
@@ -83,30 +88,35 @@ function Chat({ chats: initialChats }) {
   useEffect(() => {
     if (socket) {
       socket.on("getMessage", (data) => {
-        // Update the lastMessage for the correct chat
-        setChats((prevChats) =>
-          prevChats.map((c) =>
-            c.id === data.chatId ? { ...c, lastMessage: data.text, seenBy: [] } : c
-          )
-        );
+        console.log("Received new message: ", data);
   
-        // If the active chat is not open, increase notifications
+        setChats((prevChats) => {
+          const updatedChats = prevChats.map((c) =>
+            c.id === data.chatId
+              ? { ...c, lastMessage: data.text, seenBy: [] }
+              : c
+          );
+          console.log("Updated chats: ", updatedChats);
+          return updatedChats;
+        });
+  
         if (chat?.id !== data.chatId) {
+          console.log("Chat not open, increasing notification count");
           increase(); // Increase notification count
         } else {
-          // If the active chat is open, update messages
           setChat((prev) => ({
             ...prev,
             messages: [...prev.messages, data],
           }));
+          console.log("Updated chat messages: ", chat.messages);
         }
       });
-    }
   
-    return () => {
-      socket.off("getMessage");
-    };
+      return () => socket.off("getMessage");
+    }
   }, [socket, chat]);
+  
+
   
 
   return (
