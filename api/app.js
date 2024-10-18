@@ -56,17 +56,30 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => {
+  console.log(`User connected with transport: ` + socket.conn.transport.name);
+
+  socket.conn.on("upgrade", (transport) => {
+    console.log(`Connection upgraded to: ` + transport);
+  });
+
+  // Add new user
   socket.on("newUser", (userId) => {
     addUser(userId, socket.id);
-    console.log(onlineUser);
+    console.log(onlineUsers);
   });
+
+  // Send message
   socket.on("sendMessage", ({ receiverId, data }) => {
     const receiver = getUser(receiverId);
-    io.to(receiver?.socketId).emit("getMessage", data);
+    if (receiver) {
+      io.to(receiver.socketId).emit("getMessage", data);
+    }
   });
-  socket.on("disconnect", () => {
+
+  // User disconnect
+  socket.on("disconnect", (reason) => {
     removeUser(socket.id);
-    console.log("User disconnected");
+    console.log(`User disconnected: ` + reason);
   });
 });
 
