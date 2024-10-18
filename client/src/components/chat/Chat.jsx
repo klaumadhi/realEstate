@@ -80,10 +80,11 @@ function Chat({ chats: initialChats }) {
   };
 
   // Listen for incoming messages and handle notifications
+  // Listen for incoming messages and handle notifications
   useEffect(() => {
     if (socket) {
       socket.on("getMessage", (data) => {
-        // Update the last message for the corresponding chat
+        // Update the lastMessage for the correct chat
         setChats((prevChats) =>
           prevChats.map((c) =>
             c.id === data.chatId ? { ...c, lastMessage: data.text, seenBy: [] } : c
@@ -91,7 +92,7 @@ function Chat({ chats: initialChats }) {
         );
   
         // If the active chat is not open, increase notifications
-        if (!chat || chat.id !== data.chatId) {
+        if (chat?.id !== data.chatId) {
           increase(); // Increase notification count
         } else {
           // If the active chat is open, update messages
@@ -100,17 +101,12 @@ function Chat({ chats: initialChats }) {
             messages: [...prev.messages, data],
           }));
         }
-        if (chat) {
-          // Notify the backend that the current user has seen the chat
-          socket?.emit("markAsRead", { chatId: chat.id });
-        }
       });
-      
-
-  
-      // Clean up the listener on unmount
-      return () => socket.off("getMessage");
     }
+  
+    return () => {
+      socket.off("getMessage");
+    };
   }, [socket, chat]);
   
 
