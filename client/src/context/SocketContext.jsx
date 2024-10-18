@@ -6,16 +6,22 @@ export const SocketContextProvider = ({children})=>{
     const {currentUser} = useContext(AuthContext)
     const [socket, setSocket] =useState(null)
  
-    useEffect(()=>{
-       setSocket(io("https://realestate-bx27.onrender.com"), {
-        reconnection: true, // Allow reconnection
-        reconnectionAttempts: Infinity, // Retry reconnection indefinitely
-        reconnectionDelay: 500, // Start retrying after 1 second
-        reconnectionDelayMax: 1000, // Maximum delay between reconnections
-        transports: ["websocket"], // Use WebSocket and disable long polling
-        withCredentials: true, // Send cookies with requests if necessary
-      })
-    },[])
+    useEffect(() => {
+        if (currentUser) {
+          const newSocket = io("https://realestate-bx27.onrender.com", {
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 500,
+            reconnectionDelayMax: 1000,
+            transports: ["websocket"],
+            withCredentials: true,
+          });
+          setSocket(newSocket);
+      
+          // Clean up the socket when the component unmounts
+          return () => newSocket.close();
+        }
+      }, [currentUser]);
     useEffect(()=>{
         currentUser && socket?.emit("newUser", currentUser.id)
     },[currentUser,socket])

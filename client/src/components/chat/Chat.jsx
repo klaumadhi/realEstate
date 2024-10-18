@@ -83,7 +83,7 @@ function Chat({ chats: initialChats }) {
   useEffect(() => {
     if (socket) {
       socket.on("getMessage", (data) => {
-        // Update the lastMessage for the correct chat
+        // Update the last message for the corresponding chat
         setChats((prevChats) =>
           prevChats.map((c) =>
             c.id === data.chatId ? { ...c, lastMessage: data.text, seenBy: [] } : c
@@ -91,7 +91,7 @@ function Chat({ chats: initialChats }) {
         );
   
         // If the active chat is not open, increase notifications
-        if (chat?.id !== data.chatId) {
+        if (!chat || chat.id !== data.chatId) {
           increase(); // Increase notification count
         } else {
           // If the active chat is open, update messages
@@ -100,12 +100,17 @@ function Chat({ chats: initialChats }) {
             messages: [...prev.messages, data],
           }));
         }
+        if (chat) {
+          // Notify the backend that the current user has seen the chat
+          socket?.emit("markAsRead", { chatId: chat.id });
+        }
       });
-    }
+      
+
   
-    return () => {
-      socket.off("getMessage");
-    };
+      // Clean up the listener on unmount
+      return () => socket.off("getMessage");
+    }
   }, [socket, chat]);
   
 
