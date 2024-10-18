@@ -80,7 +80,6 @@ function Chat({ chats: initialChats }) {
   };
 
   // Listen for incoming messages and handle notifications
-  // Listen for incoming messages and handle notifications
   useEffect(() => {
     if (socket) {
       socket.on("getMessage", (data) => {
