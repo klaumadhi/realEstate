@@ -30,61 +30,37 @@ app.use("/api/messages", messageRoute);
 const server = http.createServer(app);
 
 // Initialize Socket.io and attach it to the HTTP server
-const io = new Server(server, {
+const io = new Server({
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
   },
 });
-
-// Socket.io logic
-let onlineUsers = [];
-
+let onlineUser = [];
 const addUser = (userId, socketId) => {
-  const userExists = onlineUsers.find((user) => user.userId === userId);
-  if (!userExists) {
-    onlineUsers.push({ userId, socketId });
+  const userExist = onlineUser.find((user) => user.userId === userId);
+  if (!userExist) {
+    onlineUser.push({ userId, socketId });
   }
 };
-
 const removeUser = (socketId) => {
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+  onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
 };
-
 const getUser = (userId) => {
-  return onlineUsers.find((user) => user.userId === userId);
+  return onlineUser.find((user) => user.userId === userId);
 };
-
 io.on("connection", (socket) => {
-  console.log(`User connected with transport: ` + socket.conn.transport.name);
-
-  socket.conn.on("upgrade", (transport) => {
-    console.log(`Connection upgraded to: ` + transport);
-  });
-
-  // Add new user
   socket.on("newUser", (userId) => {
     addUser(userId, socket.id);
-    console.log(onlineUsers);
+    console.log(onlineUser);
   });
-
-  // Send message
   socket.on("sendMessage", ({ receiverId, data }) => {
     const receiver = getUser(receiverId);
-    if (receiver) {
-      io.to(receiver.socketId).emit("getMessage", data);
-    }
+    io.to(receiver?.socketId).emit("getMessage", data);
   });
-
-  // User disconnect
-  socket.on("disconnect", (reason) => {
+  socket.on("disconnect", () => {
     removeUser(socket.id);
-    console.log(`User disconnected: ` + reason);
+    console.log("User disconnected");
   });
 });
-
-// Start the server
-const PORT = process.env.PORT || 9000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+io.listen(process.env.PORT);
