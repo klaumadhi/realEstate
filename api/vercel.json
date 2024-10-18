@@ -1,7 +1,8 @@
 {
-  "version": 2,
-
   "routes": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "src": "/api/(.*)", 
+      "destination": "/api/index.js"
+    }
   ]
 }
