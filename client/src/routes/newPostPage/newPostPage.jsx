@@ -136,7 +136,7 @@ function NewPostPage() {
               />
             </div>
             <div className="item">
-              <label htmlFor="size">Total Size (sqft)</label>
+              <label htmlFor="size">Total Size (m2)</label>
               <input min={0} id="size" name="size" type="number" />
             </div>
             <div className="item">
