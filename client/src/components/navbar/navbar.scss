@@ -1,10 +1,14 @@
 @import "../../responsive.scss";
 
 nav {
+  position: relative;
   height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  top: 0px;
+left: 0px;
+width: 100%;
 
   
 
