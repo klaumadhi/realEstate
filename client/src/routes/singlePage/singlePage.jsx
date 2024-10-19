@@ -15,20 +15,22 @@ function SinglePage() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
- const handleSave = async () => {
-  if (!currentUser) {
-    navigate("/login");
-  }
+  const handleSave = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
 
-  console.log("Toggling save state for post:", post.id);
-  try {
-    const response = await apiRequest.post("/users/save", { postId: post.id });
-    console.log("Save request full response:", response); // Log full response
-    setSaved((prev) => !prev);
-  } catch (err) {
-    console.error("Error saving post:", err);
-  }
-};
+    try {
+      const response = await apiRequest.post("/users/save", { postId: post.id });
+      console.log("Response from save API:", response.data);
+
+      // Update the state with the updated isSaved status from the response
+      setSaved(response.data.isSaved);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   
 

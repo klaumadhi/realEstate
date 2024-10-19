@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./card.scss";
 
 function Card({ item }) {
+  console.log(item);
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
@@ -11,11 +12,14 @@ function Card({ item }) {
         <h2 className="title">
           <Link to={`/${item.id}`}>{item.title}</Link>
         </h2>
+        <div className="middlePart">
+
         <p className="address">
           <img src="/pin.png" alt="" />
           <span>{item.address}</span>
         </p>
         <p className="price">$ {item.price}</p>
+        </div>
         <div className="bottom">
           <div className="features">
             <div className="feature">

@@ -1,8 +1,13 @@
 @import "../../responsive.scss";
 
+::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
+
 .profilePage {
   display: flex;
   height: 100%;
+
 
   @include md{
     flex-direction: column;
@@ -13,6 +18,8 @@
     flex: 3;
     overflow-y: scroll;
     padding-bottom: 50px;
+
+
 
     @include md{
       flex:none;
@@ -25,11 +32,17 @@
       flex-direction: column;
       gap: 50px;
 
+      @include sm{
+        padding-right: 0px;
+      }
+    
+
       .title{
         display: flex;
         align-items: center;
         justify-content: space-between;
 
+        
         h1{
           font-weight: 300;
         }
@@ -77,14 +90,23 @@
     background-color: #fcf5f3;
     height: 100%;
 
+    ::-webkit-scrollbar {
+      display: none; /* Hide the scrollbar */
+    }
+
     @include md{
       flex:none;
       height: max-content;
     }
 
+   
+
     .wrapper{
       padding: 0px 20px;
       height: 100%;
+      @include sm{
+        margin-bottom: 50px;
+      }
     }
   }
 }

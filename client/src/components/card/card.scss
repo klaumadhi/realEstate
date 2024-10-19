@@ -3,22 +3,40 @@
 .card {
   display: flex;
   gap: 20px;
+  align-items: center;
+
+  @include sm {
+    display: block;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin: 5px;
+    gap: 15px;
+  }
 
   .imageContainer {
     flex: 2;
-    height: 200px;
+    height: auto;
 
     @include md {
-      display: none;
+      display: block;
     }
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 12px;
+      
+      @include sm {
+        height: 150px;
+        border-radius: 8px;
+        
+      }
     }
   }
+
   .textContainer {
     flex: 3;
     display: flex;
@@ -26,20 +44,40 @@
     justify-content: space-between;
     gap: 10px;
 
+    .middlePart {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      @include sm {
+        flex-direction: column;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
     img {
       width: 16px;
       height: 16px;
     }
 
-    .title {
-      font-size: 20px;
+    h2 {
+      font-size: 22px;
       font-weight: 600;
-      color: #444;
+      color: #333;
       transition: all 0.4s ease;
+
+      @include sm {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
 
       &:hover {
         color: #000;
-        scale: 1.01;
+        transform: scale(1.03);
       }
     }
 
@@ -49,21 +87,37 @@
       align-items: center;
       gap: 5px;
       color: #888;
+
+      @include sm {
+        justify-content: center;
+        font-size: 13px;
+      }
     }
 
     .price {
       font-size: 20px;
-      font-weight: 300;
-      padding: 5px;
-      border-radius: 5px;
-      background-color: rgba(254, 205, 81, 0.438);
+      font-weight: 400;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background-color: rgba(255, 202, 64, 0.5);
       width: max-content;
+
+      @include sm {
+        font-size: 18px;
+        margin: 0 auto;
+      }
     }
 
     .bottom {
       display: flex;
       justify-content: space-between;
       gap: 10px;
+
+      @include sm {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
 
       .features {
         display: flex;
@@ -74,9 +128,15 @@
           display: flex;
           align-items: center;
           gap: 5px;
-          background-color: whitesmoke;
-          padding: 5px;
-          border-radius: 5px;
+          background-color: #f5f5f5;
+          padding: 6px 10px;
+          border-radius: 6px;
+
+          span {
+            @include sm {
+              font-size: 13px;
+            }
+          }
         }
       }
 
@@ -86,15 +146,16 @@
 
         .icon {
           border: 1px solid #999;
-          padding: 2px 5px;
-          border-radius: 5px;
+          padding: 5px 10px;
+          border-radius: 6px;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: background-color 0.3s ease;
 
           &:hover {
-            background-color: lightgray;
+            background-color: #eee;
           }
         }
       }
