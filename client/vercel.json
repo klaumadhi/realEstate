@@ -1,6 +1,6 @@
 {
     "rewrites": [
+      { "source": "/api/(.*)", "destination": "https://realestate-bx27.onrender.com/api/$1" },
       { "source": "/(.*)", "destination": "/" }
     ]
   }
-  
