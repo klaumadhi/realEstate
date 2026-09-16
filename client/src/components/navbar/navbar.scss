@@ -9,18 +9,20 @@ nav {
   top: 0px;
 left: 0px;
 width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
-  
+
 
   a:not(:has(img)){
-    transition: all 0.4s ease;
+    transition: all 0.2s ease;
+    border-radius: 8px;
 
     @include md {
       display: none;
     }
 
     &:hover {
-      scale: 1.05;
+      background-color: rgba(0, 0, 0, 0.05);
     }
   }
 
@@ -124,10 +126,17 @@ width: 100%;
       .profile{
         padding: 12px 24px;
         background-color: #fece51;
+        border-radius: 8px;
         cursor: pointer;
         border: none;
         position: relative;
-        
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(254, 206, 81, 0.5);
+        }
+
         .notification{
           position: absolute;
           top: -8px;
@@ -147,6 +156,14 @@ width: 100%;
 
     .register {
       background-color: #fece51;
+      border-radius: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+      &:hover {
+        background-color: #fece51;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(254, 206, 81, 0.5);
+      }
     }
 
     .menuIcon {
@@ -164,24 +181,56 @@ width: 100%;
       }
     }
 
+    .menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 998;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     .menu {
       position: fixed;
       top: 0;
       right: -100%;
-      background-color: black;
+      background-color: #181818;
       color: white;
       height: 100vh;
-      width: 50%;
-      transition: all 1s ease;
+      width: min(300px, 70%);
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25);
+      transition: right 0.35s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      gap: 12px;
+      font-size: 22px;
       z-index: 999;
 
       &.active {
         right: 0;
+      }
+
+      a {
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
       }
 
       @include md {

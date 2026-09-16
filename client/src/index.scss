@@ -9,7 +9,11 @@ a {
   color: inherit;
 }
 
-body{
+html, body{
   font-family: "Lato", sans-serif;
   overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  height: 100%;
+  width: 100%;
 }

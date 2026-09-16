@@ -9,8 +9,6 @@ import apiRequest from "../../lib/apiRequest";
 
 function SinglePage() {
   const post = useLoaderData();
-  console.log(post)
-  console.log(post.isSaved)
   const [saved, setSaved] = useState(post.isSaved);
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -23,16 +21,30 @@ function SinglePage() {
 
     try {
       const response = await apiRequest.post("/users/save", { postId: post.id });
-      console.log("Response from save API:", response.data);
-
-      // Update the state with the updated isSaved status from the response
       setSaved(response.data.isSaved);
     } catch (err) {
       console.log(err);
     }
   };
 
-  
+  const handleMessage = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+    if (currentUser.id === post.userId) return;
+
+    try {
+      const chatsRes = await apiRequest.get("/chats");
+      const existing = chatsRes.data.find((c) => c.userIDs?.includes(post.userId));
+      const chatId = existing
+        ? existing.id
+        : (await apiRequest.post("/chats", { receiverId: post.userId })).data.id;
+      navigate("/profile", { state: { openChatId: chatId } });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="singlePage">
@@ -50,7 +62,7 @@ function SinglePage() {
                 <div className="price">€ {post.price}</div>
               </div>
               <div className="user">
-                <img src={post.user.avatar} alt="" />
+                <img src={post.user.avatar || "/noavatar.jpg"} alt="" />
                 <span>{post.user.username}</span>
               </div>
             </div>
@@ -146,15 +158,13 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleMessage}>
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
             <button
               onClick={handleSave}
-              style={{
-                backgroundColor: saved ? "#fece51" : "white",
-              }}
+              className={saved ? "saveButton active" : "saveButton"}
             >
               <img src="/save.png" alt="" />
               {saved ? "Place Saved" : "Save the Place"}

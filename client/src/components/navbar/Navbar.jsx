@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./navbar.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -7,23 +7,46 @@ import apiRequest from "../../lib/apiRequest";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const {currentUser, updateUser} = useContext(AuthContext)
-  const navigate = useNavigate()
-  const fetch = useNotificationStore(state=> state.fetch)
-  const number = useNotificationStore(state=> state.number)
+  const { currentUser, updateUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const fetch = useNotificationStore((state) => state.fetch);
+  const number = useNotificationStore((state) => state.number);
+  const menuRef = useRef(null);
+  const menuIconRef = useRef(null);
 
-  if(currentUser) fetch()
+  if (currentUser) fetch();
 
-    const handleLogout = async () => {
+  useEffect(() => {
+    if (!open) return;
 
-      try{
-        await apiRequest.post('/auth/logout')
-        updateUser(null)
-        navigate('/')
-  
-      }catch(e){
-        console.log(e)
-      }}
+    const handleClickOutside = (e) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        menuIconRef.current &&
+        !menuIconRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <nav>
@@ -41,46 +64,69 @@ function Navbar() {
         {currentUser ? (
           <div className="user">
             <Link to="/profile">
-            {number > 0 && <div>{number}</div>}
-            <img
-              src={currentUser.avatar || "/noavatar.jpg"}
-              alt=""
-              />
-              </Link>
+              {number > 0 && <div>{number}</div>}
+              <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
+            </Link>
             <span>{currentUser.username}</span>
             <Link to="/profile" className="profile">
-             {number > 0 && <div className="notification">{number}</div>}
+              {number > 0 && <div className="notification">{number}</div>}
               <span>Profile</span>
             </Link>
           </div>
         ) : (
           <>
-            <Link to="/login">Sign in</Link>
-            <Link to="/register" className="register">
-              Sign up
+            <Link to="/register">Sign up</Link>
+            <Link to="/login" className="register">
+              Sign in
             </Link>
           </>
         )}
-        <div className="menuIcon">
+        <div className="menuIcon" ref={menuIconRef}>
           <img
             src="/menu.png"
             alt=""
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
-        <div className={open ? "menu active" : "menu"}>
-          <Link to="/" onClick={() => setOpen(false)}>Home</Link>
-          {currentUser && <Link to="/profile" onClick={() => setOpen(false)}>Profile</Link>}
-          <Link to="/list" onClick={() => setOpen(false)}>Properties</Link>
-          <Link to="/" onClick={() => setOpen(false)}>Contact</Link>
-          <Link to="/" onClick={() => setOpen(false)}>Agents</Link>
-          {!currentUser && (<>
-            <Link to="/login" onClick={() => setOpen(false)}>Sign in</Link>
-          <Link to="/register" onClick={() => setOpen(false)}>Sign up</Link>
-          </>
-
+        {open && <div className="menuOverlay" onClick={() => setOpen(false)} />}
+        <div className={open ? "menu active" : "menu"} ref={menuRef}>
+          <Link to="/" onClick={() => setOpen(false)}>
+            Home
+          </Link>
+          {currentUser && (
+            <Link to="/profile" onClick={() => setOpen(false)}>
+              Profile
+            </Link>
           )}
-          {currentUser && <Link onClick={() => { setOpen(false); handleLogout(); }}>Logout</Link>}
+          <Link to="/list" onClick={() => setOpen(false)}>
+            Properties
+          </Link>
+          <Link to="/" onClick={() => setOpen(false)}>
+            Contact
+          </Link>
+          <Link to="/" onClick={() => setOpen(false)}>
+            Agents
+          </Link>
+          {!currentUser && (
+            <>
+              <Link to="/login" onClick={() => setOpen(false)}>
+                Sign in
+              </Link>
+              <Link to="/register" onClick={() => setOpen(false)}>
+                Sign up
+              </Link>
+            </>
+          )}
+          {currentUser && (
+            <Link
+              onClick={() => {
+                setOpen(false);
+                handleLogout();
+              }}
+            >
+              Logout
+            </Link>
+          )}
         </div>
       </div>
     </nav>

@@ -6,7 +6,7 @@ import { format } from "timeago.js";
 import { SocketContext } from "../../context/SocketContext";
 import { useNotificationStore } from "../../lib/notificationStore";
 
-function Chat({ chats: initialChats }) {
+function Chat({ chats: initialChats, initialOpenChatId }) {
   const [chats, setChats] = useState(initialChats); // Track the chats locally
   const [chat, setChat] = useState(null);
   const { currentUser } = useContext(AuthContext);
@@ -22,19 +22,19 @@ function Chat({ chats: initialChats }) {
   const handleOpenChat = async (id, receiver) => {
     try {
       const res = await apiRequest(`/chats/${id}`);
-      
+
       // Check if the current user has already seen the message
       if (!res?.data.seenBy.includes(currentUser.id)) {
         // Mark as read by adding the current user's ID to the seenBy array
         res.data.seenBy.push(currentUser.id);
-        
-        
+
+
         decrease(); // Decrease notification count
       }
-      
+
       // Set the active chat
       setChat({ ...res.data, receiver });
-      
+
       // Update the chats in state with the updated seenBy information
       setChats((prevChats) =>
         prevChats.map((c) =>
@@ -45,7 +45,16 @@ function Chat({ chats: initialChats }) {
       console.error(err);
     }
   };
-  
+
+  useEffect(() => {
+    if (!initialOpenChatId) return;
+    const target = chats.find((c) => c.id === initialOpenChatId);
+    if (target) {
+      handleOpenChat(target.id, target.receiver);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialOpenChatId]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,7 +98,7 @@ function Chat({ chats: initialChats }) {
             c.id === data.chatId ? { ...c, lastMessage: data.text, seenBy: [] } : c
           )
         );
-  
+
         // If the active chat is not open, increase notifications
         if (chat?.id !== data.chatId) {
           increase(); // Increase notification count
@@ -102,35 +111,38 @@ function Chat({ chats: initialChats }) {
         }
       });
     }
-  
+
     return () => {
       socket.off("getMessage");
     };
   }, [socket, chat]);
-  
+
 
   return (
     <div className="chat">
       <div className="messages">
         <h1>Messages</h1>
+        {chats?.length === 0 && (
+          <p className="empty">No conversations yet.</p>
+        )}
         {chats?.map((c) => {
-  const isUnread = !c.seenBy.includes(currentUser.id) && c.id !== chat?.id;
+          const isUnread = !c.seenBy.includes(currentUser.id) && c.id !== chat?.id;
 
-  return (
-    <div
-      className="message"
-      key={c.id}
-      style={{
-        backgroundColor: isUnread ? "#fecd514e" : "white", // Change color if it's unread
-      }}
-      onClick={() => handleOpenChat(c.id, c.receiver)}
-    >
-      <img src={c?.receiver?.avatar || "/noavatar.jpg"} alt="" />
-      <span>{c?.receiver?.username}</span>
-      <p>{c?.lastMessage || "No messages yet"}</p>
-    </div>
-  );
-})}
+          return (
+            <div
+              className={isUnread ? "message unread" : "message"}
+              key={c.id}
+              onClick={() => handleOpenChat(c.id, c.receiver)}
+            >
+              <img src={c?.receiver?.avatar || "/noavatar.jpg"} alt="" />
+              <div className="messageText">
+                <span>{c?.receiver?.username}</span>
+                <p>{c?.lastMessage || "No messages yet"}</p>
+              </div>
+              {isUnread && <div className="unreadDot" />}
+            </div>
+          );
+        })}
 
       </div>
       {chat && (
@@ -145,12 +157,7 @@ function Chat({ chats: initialChats }) {
           <div className="center">
             {chat?.messages.map((msg) => (
               <div
-                className="chatMessage"
-                style={{
-                  alignSelf:
-                    msg.userId === currentUser.id ? "flex-end" : "flex-start",
-                  textAlign: msg.userId === currentUser.id ? "right" : "left",
-                }}
+                className={msg.userId === currentUser.id ? "chatMessage own" : "chatMessage"}
                 key={msg.id}
               >
                 <p>{msg.text}</p>
@@ -161,7 +168,7 @@ function Chat({ chats: initialChats }) {
           </div>
 
           <form onSubmit={handleSubmit} className="bottom">
-            <textarea name="text"></textarea>
+            <textarea name="text" placeholder="Write a message..."></textarea>
             <button>Send</button>
           </form>
         </div>

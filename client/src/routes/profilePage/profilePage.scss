@@ -7,10 +7,14 @@
 .profilePage {
   display: flex;
   height: 100%;
+  gap: 30px;
+  background-color: #fafafa;
+  padding: 20px 0;
 
 
   @include md{
     flex-direction: column;
+    height: max-content;
     overflow: scroll;
   }
 
@@ -24,61 +28,88 @@
     @include md{
       flex:none;
       height: max-content;
+      overflow: visible;
     }
 
     .wrapper{
-      padding-right: 50px;
+      padding-right: 20px;
       display: flex;
       flex-direction: column;
-      gap: 50px;
+      gap: 30px;
 
       @include sm{
         padding-right: 0px;
       }
-    
+
+      .section {
+        background-color: white;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+
 
       .title{
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        
+
         h1{
           font-weight: 300;
         }
 
         button{
           padding: 12px 24px;
+          border-radius: 8px;
           background-color: #fece51;
           cursor: pointer;
           border: none;
+          font-weight: 600;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(254, 206, 81, 0.5);
+          }
         }
       }
 
       .info{
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 16px;
 
         span{
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 12px;
+          color: #555;
+
+          b {
+            color: #222;
+          }
         }
 
         button{
-          width: 100px;
-          background-color: teal;
+          width: max-content;
+          background-color: #e74c4c;
           border: none;
           color: white;
-          padding: 10px 2%;
+          padding: 10px 20px;
           cursor: pointer;
-          border-radius: 10px;
+          border-radius: 8px;
+          font-weight: 600;
+          transition: background-color 0.15s ease;
+
+          &:hover {
+            background-color: #d33c3c;
+          }
         }
 
         img{
-          width: 40px;
-          height: 40px;
+          width: 56px;
+          height: 56px;
           border-radius: 50%;
           object-fit: cover;
         }
@@ -87,10 +118,7 @@
   }
   .chatContainer {
     flex: 2;
-    background-color: #fcf5f3;
     height: 100%;
-    // overflow-y: scroll;
-
 
     ::-webkit-scrollbar {
       display: none; /* Hide the scrollbar */
@@ -101,13 +129,18 @@
       height: max-content;
     }
 
-   
+
 
     .wrapper{
-      padding: 0px 20px;
+      background-color: white;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      padding: 20px;
       height: 100%;
+
       @include sm{
-        margin-bottom: 80px;
+        margin-bottom: 30px;
+        height: max-content;
       }
     }
   }

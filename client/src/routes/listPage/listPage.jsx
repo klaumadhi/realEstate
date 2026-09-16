@@ -13,6 +13,7 @@ function ListPage() {
     <div className="listContainer">
       <div className="wrapper">
         <Filter/>
+        <div className="cards">
        <Suspense fallback={<p>Loading ...</p>}>
        <Await
           resolve={data.postResponse}
@@ -20,11 +21,14 @@ function ListPage() {
             <p>Error loading posts!</p>
           }
         >
-          {(postResponse) => postResponse.data.map(post=>
+          {(postResponse) => postResponse.data.length === 0
+            ? <p className="noResults">No properties match your search.</p>
+            : postResponse.data.map(post=>
             <Card key={post.id} item={post}/>
           )}
         </Await>
        </Suspense>
+        </div>
       </div>
     </div>
     <div className="mapContainer">

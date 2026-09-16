@@ -1,54 +1,105 @@
+@import "../../responsive.scss";
+
 .filter {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 
   h1 {
     font-weight: 300;
     font-size: 24px;
+
+    b {
+      font-weight: 600;
+    }
   }
 
   .item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 
     label {
-      font-size: 10px;
+      font-size: 12px;
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     input,
     select {
-      width: 100px;
-      padding: 10px;
+      padding: 12px 14px;
       border: 1px solid #e0e0e0;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 14px;
+      font-family: inherit;
+      background-color: white;
+      transition: border-color 0.15s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #fece51;
+      }
     }
   }
 
   .top {
-    input {
+    .item.city input {
       width: 100%;
     }
   }
 
   .bottom {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    align-items: end;
 
-    button {
-      width: 100px;
-      padding: 10px;
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item select,
+    .item input {
+      width: 100%;
+    }
+
+    .searchButton {
+      grid-column: span 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
       background-color: #fece51;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+      @include lg {
+        grid-column: span 3;
+      }
+
+      @include sm {
+        grid-column: span 2;
+      }
 
       img {
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(254, 206, 81, 0.5);
       }
     }
   }

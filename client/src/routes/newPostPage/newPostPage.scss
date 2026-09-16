@@ -32,6 +32,19 @@
         flex-wrap: wrap;
         gap: 20px;
 
+        .hint {
+          width: 100%;
+          font-size: 13px;
+          color: #888;
+          margin-top: -10px;
+        }
+
+        .error {
+          width: 100%;
+          color: #d33c3c;
+          font-size: 14px;
+        }
+
         .item {
           width: 30%;
           display: flex;
@@ -78,6 +91,11 @@
           font-weight: bold;
           cursor: pointer;
           padding: 12px 0;
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
 
           @include md {
             width: 45%;

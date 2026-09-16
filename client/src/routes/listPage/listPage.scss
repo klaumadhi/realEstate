@@ -13,12 +13,24 @@
       padding-right: 50px;
       display: flex;
       flex-direction: column;
-      gap: 50px;
+      gap: 30px;
       overflow-y: scroll;
-      padding-bottom: 50px;
+      padding-bottom: 20px;
 
       @include sm{
         padding-right: 0px;
+      }
+
+      .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .noResults {
+        color: #999;
+        text-align: center;
+        padding: 40px 0;
       }
     }
   }

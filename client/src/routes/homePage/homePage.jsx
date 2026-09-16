@@ -13,10 +13,10 @@ function HomePage() {
         <div className="wrapper">
           <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-            explicabo suscipit cum eius, iure est nulla animi consequatur
-            facilis id pariatur fugit quos laudantium temporibus dolor ea
-            repellat provident impedit!
+            Browse thousands of verified listings for houses, apartments,
+            condos and land. Whether you're buying your first home or
+            renting your next one, KlauEstate helps you find the right
+            place, faster.
           </p>
           <SearchBar />
           <div className="boxes">
