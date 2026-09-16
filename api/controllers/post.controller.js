@@ -53,7 +53,7 @@ export const getPost = async (req, res) => {
     if (token) {
       try {
         // Verify JWT token asynchronously
-        const payload = await verifyToken(token, process.env.JWT_SECRET_KEY);
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
 
         // Check if post is saved by the user
         const saved = await prisma.savedPost.findUnique({

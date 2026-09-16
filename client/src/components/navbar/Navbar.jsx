@@ -69,18 +69,18 @@ function Navbar() {
           />
         </div>
         <div className={open ? "menu active" : "menu"}>
-          <Link to="/">Home</Link>
-          {currentUser && <Link to="/profile">Profile</Link>}
-          <Link to="/list">Properties</Link>
-          <Link to="/">Contact</Link>
-          <Link to="/">Agents</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Home</Link>
+          {currentUser && <Link to="/profile" onClick={() => setOpen(false)}>Profile</Link>}
+          <Link to="/list" onClick={() => setOpen(false)}>Properties</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Contact</Link>
+          <Link to="/" onClick={() => setOpen(false)}>Agents</Link>
           {!currentUser && (<>
-            <Link to="/login">Sign in</Link>
-          <Link to="/register">Sign up</Link>
+            <Link to="/login" onClick={() => setOpen(false)}>Sign in</Link>
+          <Link to="/register" onClick={() => setOpen(false)}>Sign up</Link>
           </>
-          
+
           )}
-          {currentUser && <Link onClick={handleLogout}>Logout</Link>}
+          {currentUser && <Link onClick={() => { setOpen(false); handleLogout(); }}>Logout</Link>}
         </div>
       </div>
     </nav>

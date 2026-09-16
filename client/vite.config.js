@@ -4,4 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://realestate-bx27.onrender.com",
+        changeOrigin: true,
+      },
+    },
+  },
 })
