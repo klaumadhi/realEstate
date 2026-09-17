@@ -4,6 +4,8 @@ import "./slider.scss";
 function Slider({ images }) {
   const [imageIndex, setImageIndex] = useState(null);
   const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+  const justSwiped = useRef(false);
 
   const changeSlide = (direction) => {
     if (direction === "left") {
@@ -37,15 +39,30 @@ function Slider({ images }) {
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null) return;
-    const delta = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(delta) > 50) {
-      changeSlide(delta > 0 ? "left" : "right");
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      changeSlide(deltaX > 0 ? "left" : "right");
+      // A swipe triggers a trailing click on mobile browsers; swallow it so
+      // it doesn't immediately close the viewer right after navigating.
+      justSwiped.current = true;
+      setTimeout(() => {
+        justSwiped.current = false;
+      }, 300);
     }
     touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
+  const handleBackdropClick = () => {
+    if (justSwiped.current) return;
+    setImageIndex(null);
   };
 
   return (
@@ -53,12 +70,18 @@ function Slider({ images }) {
       {imageIndex !== null && (
         <div
           className="fullSlider"
-          onClick={() => setImageIndex(null)}
+          onClick={handleBackdropClick}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
+          <div className="counter">
+            {imageIndex + 1} / {images.length}
+          </div>
+          <div className="close" onClick={() => setImageIndex(null)}>
+            X
+          </div>
           <div
-            className="arrow"
+            className="arrow left"
             onClick={(e) => {
               e.stopPropagation();
               changeSlide("left");
@@ -70,16 +93,13 @@ function Slider({ images }) {
             <img src={images[imageIndex]} alt="" />
           </div>
           <div
-            className="arrow"
+            className="arrow right"
             onClick={(e) => {
               e.stopPropagation();
               changeSlide("right");
             }}
           >
             <img src="/arrow.png" className="right" alt="" />
-          </div>
-          <div className="close" onClick={() => setImageIndex(null)}>
-            X
           </div>
         </div>
       )}
