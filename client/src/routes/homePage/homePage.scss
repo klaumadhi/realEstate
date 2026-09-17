@@ -21,10 +21,12 @@
 
       @include md{
         padding: 0;
+        justify-content: flex-start;
+        padding-top: 60px;
       }
 
       @include sm{
-        justify-content: flex-start;
+        padding-top: 20px;
       }
 
       .title {

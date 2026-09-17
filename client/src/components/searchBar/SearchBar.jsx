@@ -1,15 +1,16 @@
 import { useState } from "react";
 import "./searchBar.scss";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const types = ["buy", "rent"];
 
 function SearchBar() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState({
     type: "buy",
-    location: "",
-    minPrice: 0,
-    maxPrice: 0,
+    city: "",
+    minPrice: "",
+    maxPrice: "",
   });
 
   const switchType = (val) => {
@@ -17,9 +18,16 @@ function SearchBar() {
   };
 
   const handleChange = (e) => {
+    setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
-    
-    setQuery((prev) => ({...prev, [e.target.name]: e.target.value }));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const params = { type: query.type };
+    if (query.city) params.city = query.city;
+    if (query.minPrice) params.minPrice = query.minPrice;
+    if (query.maxPrice) params.maxPrice = query.maxPrice;
+    navigate(`/list?${new URLSearchParams(params).toString()}`);
   };
 
   return (
@@ -28,6 +36,7 @@ function SearchBar() {
         {types.map((type) => (
           <button
             key={type}
+            type="button"
             onClick={() => switchType(type)}
             className={query.type === type ? "active" : ""}
           >
@@ -35,27 +44,23 @@ function SearchBar() {
           </button>
         ))}
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input type="text" name="city" placeholder="City Location" onChange={handleChange} />
         <input
           type="number"
           name="minPrice"
           min={0}
-          max={10000000}
           placeholder="Min Price" onChange={handleChange}
         />
         <input
           type="number"
           name="maxPrice"
           min={0}
-          max={10000000}
           placeholder="Max Price" onChange={handleChange}
         />
-        <Link to={`/list/?type=${query.type}&city=${query.city || ""}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}>
-        <button>
+        <button type="submit" className="submitButton">
           <img src="/search.png" alt="" />
         </button>
-        </Link>
       </form>
     </div>
   );

@@ -2,51 +2,65 @@
 
 .searchBar {
   .type {
-
-
     button {
-      padding: 16px 36px;
-      border: 1px solid #999;
+      padding: 14px 32px;
+      border: 1px solid #e0e0e0;
       border-bottom: none;
       cursor: pointer;
       background-color: white;
       text-transform: capitalize;
+      font-weight: 600;
+      transition: background-color 0.15s ease, color 0.15s ease;
 
       &.active {
-        background-color: black;
+        background-color: #181818;
         color: white;
       }
 
       &:first-child {
-        border-top-left-radius: 5px;
+        border-top-left-radius: 8px;
         border-right: none;
       }
       &:last-child {
-        border-top-right-radius: 5px;
+        border-top-right-radius: 8px;
         border-left: none;
       }
     }
   }
 
   form {
-    border: 1px solid #999;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 8px 8px 8px;
     display: flex;
     justify-content: space-between;
     height: 64px;
     gap: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
 
     @include sm {
       flex-direction: column;
+      height: auto;
+      border-radius: 8px;
       border: none;
+      box-shadow: none;
+      gap: 10px;
     }
 
     input {
       border: none;
-      padding: 0px 10px;
+      padding: 0px 16px;
       width: 200px;
+      font-family: inherit;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        background-color: #fafafa;
+      }
 
       @include lg {
-        padding: 0px 5px;
+        padding: 0px 10px;
 
         &:nth-child(2),
         &:nth-child(3) {
@@ -62,36 +76,40 @@
       }
 
       @include sm{
-        width: auto;
+        width: 100%;
         &:nth-child(2),
         &:nth-child(3) {
-          width: auto;
+          width: 100%;
         }
-        padding: 20px;
-        border: 1px solid #999;
+        padding: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
       }
     }
-    a{
+
+    .submitButton {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: #fece51;
-
-      
-      button {
-      background-color: #fece51;
       border: none;
       cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: #f7c14b;
+      }
 
       @include sm{
-        padding: 10px;
+        padding: 14px;
+        border-radius: 8px;
       }
 
       img {
         width: 24px;
         height: 24px;
       }
-    }}
+    }
   }
 }
