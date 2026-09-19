@@ -2,6 +2,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  /* Smooth native-style momentum scrolling on iOS for our custom
+     scroll containers. */
+  -webkit-overflow-scrolling: touch;
 }
 
 a {
@@ -12,7 +15,6 @@ a {
 html, body{
   font-family: "Lato", sans-serif;
   overflow: hidden;
-  overscroll-behavior: none;
   touch-action: pan-y;
   height: 100%;
   width: 100%;
