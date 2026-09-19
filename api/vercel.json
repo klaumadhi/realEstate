@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "npm run build",
-    "installCommand": "npm install"
-   
+    "buildCommand": "npm run build && mkdir -p public && echo '<!DOCTYPE html><html><body><p>This project is not used. The live API runs on Render.</p></body></html>' > public/index.html",
+    "installCommand": "npm install",
+    "outputDirectory": "public"
   }
